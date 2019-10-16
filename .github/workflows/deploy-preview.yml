@@ -10,3 +10,5 @@ jobs:
         with:
           node-version: '10.x'
       - uses: ./.github/actions/custom-action
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

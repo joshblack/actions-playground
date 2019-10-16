@@ -1,5 +1,9 @@
 name: Custom action
 description: A custom action
+inputs:
+  GITHUB_TOKEN:
+    description: A GitHub token to execute GitHub tasks
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
