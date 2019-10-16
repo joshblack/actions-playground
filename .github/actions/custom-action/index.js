@@ -19,6 +19,7 @@ async function run() {
     description: 'test description',
   });
 
+  console.log('creating in progress');
   await octokit.repos.createDeploymentStatus({
     owner,
     repo,
@@ -28,8 +29,10 @@ async function run() {
     state: 'in_progress',
   });
 
+  console.log('sleeping');
   await sleep(10000);
 
+  console.log('creating success');
   await octokit.repos.createDeploymentStatus({
     owner,
     repo,
