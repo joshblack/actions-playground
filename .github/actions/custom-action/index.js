@@ -4,15 +4,12 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  const token = core.getInput('GITHUB_TOKEN');
-  const octokit = new github.GitHub(token);
+  console.log(core.getInput('GITHUB_REF'));
+  // const token = core.getInput('GITHUB_TOKEN');
 
-  const { data } = await octokit.pulls.list({
-    owner: 'joshblack',
-    repo: 'actions-playground',
-  });
+  // const octokit = new github.GitHub(token);
 
-  console.log(data);
+  // await octokit.repos.createDeployment
 }
 
 run().catch(error => {

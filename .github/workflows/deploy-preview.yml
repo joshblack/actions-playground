@@ -12,3 +12,4 @@ jobs:
       - uses: ./.github/actions/custom-action
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REF: $GITHUB_REF
