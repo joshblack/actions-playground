@@ -17,26 +17,25 @@ async function run() {
     description: 'test description',
   });
 
-  console.log(data.id);
-  // await octokit.repos.createDeploymentStatus({
-    // owner,
-    // repo,
-    // id: data.id,
-    // // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
-    // // 'success'
-    // state: 'in_progress',
-  // });
+  await octokit.repos.createDeploymentStatus({
+    owner,
+    repo,
+    id: data.id,
+    // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
+    // 'success'
+    state: 'in_progress',
+  });
 
-  // await sleep(10000);
+  await sleep(10000);
 
-  // await octokit.repos.createDeploymentStatus({
-    // owner,
-    // repo,
-    // id: data.id,
-    // // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
-    // // 'success'
-    // state: 'success',
-  // });
+  await octokit.repos.createDeploymentStatus({
+    owner,
+    repo,
+    id: data.id,
+    // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
+    // 'success'
+    state: 'success',
+  });
 }
 
 function sleep(ms = 1000) {
