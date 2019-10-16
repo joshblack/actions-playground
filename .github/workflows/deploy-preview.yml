@@ -9,5 +9,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - name: Hello
-        run: echo 'Hello there'
+      - uses: ../actions/custom-action
