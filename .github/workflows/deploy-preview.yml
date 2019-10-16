@@ -9,4 +9,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - uses: ../actions/custom-action
+      - uses: ./.github/actions/custom-action
