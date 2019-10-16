@@ -5,5 +5,5 @@ inputs:
     description: A GitHub token to execute GitHub tasks
     required: true
 runs:
-  using: 'node12'
-  main: 'index.js'
+  using: 'docker'
+  main: 'Dockerfile'
