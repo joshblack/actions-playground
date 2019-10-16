@@ -20,7 +20,7 @@ async function run() {
   await octokit.repos.createDeploymentStatus({
     owner,
     repo,
-    id: data.id,
+    deployment_id: data.id,
     // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
     // 'success'
     state: 'in_progress',
@@ -31,7 +31,7 @@ async function run() {
   await octokit.repos.createDeploymentStatus({
     owner,
     repo,
-    id: data.id,
+    deployment_id: data.id,
     // 'error', 'failure', 'inactive', 'in_progress', 'queued pending',
     // 'success'
     state: 'success',
