@@ -20,7 +20,7 @@ async function run() {
   });
 
   console.log('creating in progress');
-  const { data } = await octokit.repos.createDeploymentStatus({
+  const { data: result } = await octokit.repos.createDeploymentStatus({
     owner,
     repo,
     deployment_id: data.id,
@@ -28,7 +28,7 @@ async function run() {
     // 'success'
     state: 'in_progress',
   });
-  console.log(data);
+  console.log(result);
 
   console.log('sleeping');
   await sleep(10000);
