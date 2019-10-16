@@ -6,4 +6,4 @@ inputs:
     required: true
 runs:
   using: 'docker'
-  main: 'Dockerfile'
+  image: 'Dockerfile'
