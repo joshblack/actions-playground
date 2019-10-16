@@ -1,5 +1,5 @@
 name: Custom action
 description: A custom action
 runs:
-  using: 'node10'
+  using: 'node12'
   main: 'index.js'
