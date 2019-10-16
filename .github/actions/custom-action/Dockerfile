@@ -5,4 +5,4 @@ COPY . .
 RUN yarn install --production
 RUN ls -al
 RUN ls -al node_modules
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "/usr/src/action/index.js"]
