@@ -15,12 +15,12 @@ async function run() {
     owner,
     repo,
     ref: GITHUB_REF,
-    environment: 'preview',
+    // environment: 'preview',
     description: 'test description',
   });
 
   console.log('creating in progress');
-  await octokit.repos.createDeploymentStatus({
+  const { data } = await octokit.repos.createDeploymentStatus({
     owner,
     repo,
     deployment_id: data.id,
@@ -28,6 +28,7 @@ async function run() {
     // 'success'
     state: 'in_progress',
   });
+  console.log(data);
 
   console.log('sleeping');
   await sleep(10000);
