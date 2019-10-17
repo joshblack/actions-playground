@@ -15,7 +15,8 @@ async function run() {
     owner,
     repo,
     // ref: GITHUB_REF,
-    ref: GITHUB_SHA,
+    // ref: GITHUB_SHA,
+    ref: 'joshblack-patch-1',
     environment: 'preview',
     description: 'test description',
   });
