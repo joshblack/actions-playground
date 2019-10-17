@@ -4,7 +4,7 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  const { GITHUB_REF, GITHUB_REPOSITORY } = process.env;
+  const { GITHUB_REF, GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
   const token = core.getInput('GITHUB_TOKEN');
   const octokit = new github.GitHub(token, {
     previews: ['flash-preview'],
@@ -14,8 +14,9 @@ async function run() {
   const { data } = await octokit.repos.createDeployment({
     owner,
     repo,
-    ref: GITHUB_REF,
-    // environment: 'preview',
+    // ref: GITHUB_REF,
+    ref: GITHUB_SHA,
+    environment: 'preview',
     description: 'test description',
   });
 
