@@ -4,13 +4,20 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  console.log(JSON.stringify(github.context, null, 2));
-  // const { GITHUB_REF, GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
-  // const token = core.getInput('GITHUB_TOKEN');
-  // const octokit = new github.GitHub(token, {
-    // previews: ['flash-preview'],
-  // });
-  // const [owner, repo] = GITHUB_REPOSITORY.split('/');
+  const { GITHUB_REF, GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
+  const token = core.getInput('GITHUB_TOKEN');
+  const octokit = new github.GitHub(token, {
+    previews: ['flash-preview'],
+  });
+  const [owner, repo] = GITHUB_REPOSITORY.split('/');
+
+  const { data } = await octokit.pulls.listFiles({
+    owner,
+    repo,
+    pull_number: github.context.number,
+  });
+
+  console.log(data);
 
   // const { data } = await octokit.repos.createDeployment({
     // owner,
