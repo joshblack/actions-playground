@@ -14,7 +14,7 @@ async function run() {
   const { data } = await octokit.pulls.listFiles({
     owner,
     repo,
-    pull_number: github.context.number,
+    pull_number: github.context.payload.number,
   });
 
   console.log(data);
