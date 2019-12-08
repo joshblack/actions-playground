@@ -11,11 +11,13 @@ async function run() {
   });
   const [owner, repo] = GITHUB_REPOSITORY.split('/');
 
-  const { data } = await octokit.pulls.listFiles({
+  const options = octokit.pulls.listFiles.endpoint.merge({
     owner,
     repo,
     pull_number: github.context.payload.number,
   });
+  // Max 300 files
+  const { data } = await octokit.paginate(options);
 
   console.log(data);
 
