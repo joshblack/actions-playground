@@ -17,9 +17,9 @@ async function run() {
     pull_number: github.context.payload.number,
   });
   // Max 300 files
-  const { data } = await octokit.paginate(options);
+  const response = await octokit.paginate(options);
 
-  console.log(data);
+  console.log(response);
 
   // const { data } = await octokit.repos.createDeployment({
     // owner,
