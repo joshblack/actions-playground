@@ -5,32 +5,14 @@ const core = require('@actions/core');
 
 async function run() {
   const { context } = github;
-  const token = core.getInput('GITHUB_TOKEN');
+  const token = core.getInput('GITHUB_TOKEN', {
+    required: true,
+  });
   const octokit = new github.GitHub(token);
   const { pull_request: pullRequest, repository, review } = context.payload;
-
-  // check if reviewer is collaborator
-  const {
-    data: permissionLevel,
-  } = await octokit.repos.getCollaboratorPermissionLevel({
-    owner: repository.owner.login,
-    repo: repository.name,
-    username: review.user.login,
-  });
-
-  const acceptedPermissionLevels = new Set(['admin', 'write']);
-  if (!acceptedPermissionLevels.has(permissionLevel.permission)) {
-    return;
-  }
-
-  // We only work with reviews that are indicating approval
-  if (review.state !== 'approved') {
-    return;
-  }
-
   const { id, labels, number, state, draft, user } = pullRequest;
 
-  // We only want to work with Pull Requests marked as open
+  // We only want to work with Pull Requests that are marked as open
   if (state !== 'open') {
     return;
   }
@@ -40,17 +22,39 @@ async function run() {
     return;
   }
 
-  // list reviewers
+  const {
+    data: permissionLevel,
+  } = await octokit.repos.getCollaboratorPermissionLevel({
+    owner: repository.owner.login,
+    repo: repository.name,
+    username: review.user.login,
+  });
+
+  // If the reviewer doesn't have one of the following permission levels
+  // then ignore the event
+  const acceptedPermissionLevels = new Set(['admin', 'write']);
+  if (!acceptedPermissionLevels.has(permissionLevel.permission)) {
+    return;
+  }
+
+  // If the review was not an approval then we'll ignore the event
+  if (review.state !== 'approved') {
+    return;
+  }
+
   const { data: allReviews } = await octokit.pulls.listReviews({
     owner: repository.owner.login,
     repo: repository.name,
     pull_number: pullRequest.number,
   });
 
-  // collapse reviews
+  // The `listReviews` endpoint will return all of the reviews for the pull
+  // request. We only care about the most recent reviews so we'll go through the
+  // list and get the most recent review for each reviewer
   const reviewers = {};
   const reviews = [];
-  // Process reviews in reverse since they are listed from oldest to newest
+
+  // Process reviews in reverse order since they are listed from oldest to newest
   for (const review of allReviews.reverse()) {
     const { author_association: association, user } = review;
     // If we've already saved a review for this user we already have the most
@@ -72,66 +76,52 @@ async function run() {
     return review.state === 'APPROVED';
   });
 
-  const { data: protection } = await octokit.repos.getBranchProtection({
-    owner: repository.owner.login,
-    repo: repository.name,
-    branch: pullRequest.base.ref,
-  });
+  const additionalReviewLabel = 'one more review';
+  const readyForReviewLabel = 'ready for review';
 
-  console.log(protection);
-  return;
-
-  if (approved.length === 1) {
-    // Add label to pull (issue)
-    await octokit.issues.addLabels({
-      owner: repository.owner.login,
-      repo: repository.name,
-      issue_number: pullRequest.number,
-      labels: ['one more review'],
-    });
-
+  if (approved.length > 0) {
     const hasReadyLabel = pullRequest.labels.find(label => {
-      return label.name === 'ready for review';
+      return label.name === readyForReviewLabel;
     });
     if (hasReadyLabel) {
       await octokit.issues.removeLabel({
         owner: repository.owner.login,
         repo: repository.name,
         issue_number: pullRequest.number,
-        name: 'ready for review',
+        name: readyForReviewLabel,
       });
     }
+  }
 
+  if (approved.length === 1) {
+    const hasAdditionalReviewLabel = pullRequest.labels.find(label => {
+      return label.name === additionalReviewLabel;
+    });
+    if (!hasAdditionalReviewLabel) {
+      await octokit.issues.addLabels({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pullRequest.number,
+        labels: [additionalReviewLabel],
+      });
+    }
     return;
   }
 
   if (approved.length >= 2) {
     const hasAdditionalReviewLabel = pullRequest.labels.find(label => {
-      return label.name === 'one more review';
+      return label.name === additionalReviewLabel;
     });
     if (hasAdditionalReviewLabel) {
       await octokit.issues.removeLabel({
         owner: repository.owner.login,
         repo: repository.name,
         issue_number: pullRequest.number,
-        name: 'one more review',
+        name: additionalReviewLabel,
       });
     }
     return;
   }
-
-  // 2+: ready to review
-  // 1: one review needed
-  // 0: ready to merge
-
-  // list labels for review
-
-  // Get all labels?
-
-  // 1. Get the Pull Request
-  // 2. Get the reviewers for the Pull Request
-  // 3. Get the labels for the Pull Request
-  // 4. Check reviewers against labels
 
   // Auto-merge?
   // octokit.pulls.merge({ owner, repo, pull_number });
