@@ -10,12 +10,12 @@ async function run() {
     previews: ['flash-preview'],
   });
 
-  const { pull_request: pullRequest } = context.payload;
+  const { pull_request: pullRequest, repository } = context.payload;
   if (!pullRequest) {
     throw new Error(`Unable to determine pull request from context`);
   }
 
-  const { id, labels, number, repository, state, draft, user } = pullRequest;
+  const { id, labels, number, state, draft, user } = pullRequest;
 
   // We only want to work with Pull Requests marked as open
   if (state !== 'open') {
@@ -29,10 +29,10 @@ async function run() {
 
   console.log(repository);
 
-  // const { name, owner } = repository;
-  // console.log(name);
-  // console.log(owner);
-  // console.log(user);
+  const { name, owner } = repository;
+  console.log(name);
+  console.log(owner);
+  console.log(user);
 
   // Check if review is approval or not
 
