@@ -58,6 +58,8 @@ async function run() {
   // Process reviews in reverse order since they are listed from oldest to newest
   for (const review of allReviews.reverse()) {
     const { author_association: association, user } = review;
+    console.log(reviews);
+    console.log(association);
     // If we've already saved a review for this user we already have the most
     // recent review
     if (reviewers[user.login]) {
