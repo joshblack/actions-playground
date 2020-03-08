@@ -49,6 +49,8 @@ async function run() {
     pull_number: pullRequest.number,
   });
 
+  console.log(JSON.stringify(allReviews, null, 2));
+
   // The `listReviews` endpoint will return all of the reviews for the pull
   // request. We only care about the most recent reviews so we'll go through the
   // list and get the most recent review for each reviewer
@@ -58,8 +60,6 @@ async function run() {
   // Process reviews in reverse order since they are listed from oldest to newest
   for (const review of allReviews.reverse()) {
     const { author_association: association, user } = review;
-    console.log(reviews);
-    console.log(association);
     // If we've already saved a review for this user we already have the most
     // recent review
     if (reviewers[user.login]) {
