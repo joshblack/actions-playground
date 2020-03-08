@@ -17,13 +17,17 @@ async function run() {
 
   // check if reviewer is collaborator
   // octokit.repos.checkCollaborator({ owner, repo, username });
-  const isCollaborator = await octokit.repos.checkCollaborator({
-    owner: repository.owner.login,
-    name: repository.name,
-    username: review.user.login,
-  });
+  console.log(repository.owner.login);
+  console.log(repository.name);
+  console.log(review.user.login);
 
-  console.log(isCollaborator);
+  // const isCollaborator = await octokit.repos.checkCollaborator({
+  // owner: repository.owner.login,
+  // name: repository.name,
+  // username: review.user.login,
+  // });
+
+  // console.log(isCollaborator);
   return;
 
   // We only work with reviews that are indicating approval
