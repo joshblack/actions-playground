@@ -4,33 +4,34 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  const { context } = github;
-  const token = core.getInput('GITHUB_TOKEN');
-  const octokit = new github.GitHub(token, {
-    previews: ['flash-preview'],
-  });
+  console.log('hi');
+  // const { context } = github;
+  // const token = core.getInput('GITHUB_TOKEN');
+  // const octokit = new github.GitHub(token, {
+  // previews: ['flash-preview'],
+  // });
 
-  const { pull_request: pullRequest } = context.payload;
-  if (!pullRequest) {
-    throw new Error(`Unable to determine pull request from context`);
-  }
+  // const { pull_request: pullRequest } = context.payload;
+  // if (!pullRequest) {
+  // throw new Error(`Unable to determine pull request from context`);
+  // }
 
-  const { id, labels, number, repository, state, draft, user } = pullRequest;
+  // const { id, labels, number, repository, state, draft, user } = pullRequest;
 
-  // We only want to work with Pull Requests marked as open
-  if (state !== 'open') {
-    return;
-  }
+  // // We only want to work with Pull Requests marked as open
+  // if (state !== 'open') {
+  // return;
+  // }
 
-  // We only want to work with Pull Requests that are not draft PRs
-  if (draft) {
-    return;
-  }
+  // // We only want to work with Pull Requests that are not draft PRs
+  // if (draft) {
+  // return;
+  // }
 
-  const { name, owner } = repository;
-  console.log(name);
-  console.log(owner);
-  console.log(user);
+  // const { name, owner } = repository;
+  // console.log(name);
+  // console.log(owner);
+  // console.log(user);
 
   // Check if review is approval or not
 
