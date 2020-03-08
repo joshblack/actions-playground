@@ -10,11 +10,28 @@ async function run() {
     previews: ['flash-preview'],
   });
 
-  const { pull_request: pullRequest, repository } = context.payload;
+  const { pull_request: pullRequest, repository, review } = context.payload;
   if (!pullRequest) {
     throw new Error(`Unable to determine pull request from context`);
   }
 
+  // check if reviewer is collaborator
+  // octokit.repos.checkCollaborator({ owner, repo, username });
+  const isCollaborator = await octokit.repos.checkCollaborator({
+    owner: repository.owner.login,
+    name: repository.name,
+    username: review.user.login,
+  });
+
+  console.log(isCollaborator);
+  return;
+
+  // We only work with reviews that are indicating approval
+  if (review.state !== 'approved') {
+    return;
+  }
+
+  return;
   const { id, labels, number, state, draft, user } = pullRequest;
 
   // We only want to work with Pull Requests marked as open
@@ -27,22 +44,13 @@ async function run() {
     return;
   }
 
-  console.log(repository);
-
-  const { name, owner } = repository;
-  console.log(name);
-  console.log(owner);
-  console.log(user);
-
-  // Check if review is approval or not
+  // user, user.id, user.login
+  // owner, owner.id, owner.login
 
   // list reviewers
   // octokit.pulls.listReviews({ owner, repo, pull_number });
 
   // list labels for review
-
-  // check if reviewer is collaborator
-  // octokit.repos.checkCollaborator({ owner, repo, username });
 
   // Add label to pull (issue)
   // octokit.issues.addLabels({ owner, repo, issue_number, labels: ['label-name'] });
