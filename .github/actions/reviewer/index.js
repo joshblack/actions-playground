@@ -47,9 +47,8 @@ async function run() {
     owner: repository.owner.login,
     repo: repository.name,
     pull_number: pullRequest.number,
+    per_page: 100,
   });
-
-  console.log(JSON.stringify(allReviews, null, 2));
 
   // The `listReviews` endpoint will return all of the reviews for the pull
   // request. We only care about the most recent reviews so we'll go through the
