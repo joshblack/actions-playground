@@ -7,11 +7,7 @@ async function run() {
   const { context } = github;
   const token = core.getInput('GITHUB_TOKEN');
   const octokit = new github.GitHub(token);
-
   const { pull_request: pullRequest, repository, review } = context.payload;
-  if (!pullRequest) {
-    throw new Error(`Unable to determine pull request from context`);
-  }
 
   // check if reviewer is collaborator
   const {
@@ -76,7 +72,16 @@ async function run() {
     return review.state === 'APPROVED';
   });
 
-  if (approved.length === 10) {
+  const { data: protection } = await octokit.repos.getBranchProtection({
+    owner: repository.owner.login,
+    repo: repository.name,
+    branch: pullRequest.base.ref,
+  });
+
+  console.log(protection);
+  return;
+
+  if (approved.length === 1) {
     // Add label to pull (issue)
     await octokit.issues.addLabels({
       owner: repository.owner.login,
@@ -100,7 +105,7 @@ async function run() {
     return;
   }
 
-  if (approved.length >= 1) {
+  if (approved.length >= 2) {
     const hasAdditionalReviewLabel = pullRequest.labels.find(label => {
       return label.name === 'one more review';
     });
