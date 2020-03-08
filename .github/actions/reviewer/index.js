@@ -16,13 +16,21 @@ async function run() {
   // check if reviewer is collaborator
   // octokit.repos.checkCollaborator({ owner, repo, username });
 
-  const isCollaborator = await octokit.repos.checkCollaborator({
+  const {
+    data: permissionLevel,
+  } = await octokit.repos.getCollaboratorPermissionLevel({
     owner: repository.owner.login,
     repo: repository.name,
     username: review.user.login,
   });
 
-  console.log(isCollaborator);
+  console.log(permissionLevel);
+  return;
+
+  const acceptedPermissionLevels = new Set(['admin', 'write']);
+  if (!acceptedPermissionLevels.has(permissionLevel)) {
+    return;
+  }
   return;
 
   // We only work with reviews that are indicating approval
