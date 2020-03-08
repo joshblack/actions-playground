@@ -14,8 +14,6 @@ async function run() {
   }
 
   // check if reviewer is collaborator
-  // octokit.repos.checkCollaborator({ owner, repo, username });
-
   const {
     data: permissionLevel,
   } = await octokit.repos.getCollaboratorPermissionLevel({
@@ -24,21 +22,16 @@ async function run() {
     username: review.user.login,
   });
 
-  console.log(permissionLevel);
-  return;
-
   const acceptedPermissionLevels = new Set(['admin', 'write']);
-  if (!acceptedPermissionLevels.has(permissionLevel)) {
+  if (!acceptedPermissionLevels.has(permissionLevel.permission)) {
     return;
   }
-  return;
 
   // We only work with reviews that are indicating approval
   if (review.state !== 'approved') {
     return;
   }
 
-  return;
   const { id, labels, number, state, draft, user } = pullRequest;
 
   // We only want to work with Pull Requests marked as open
@@ -50,6 +43,8 @@ async function run() {
   if (draft) {
     return;
   }
+
+  console.log(pullRequest);
 
   // user, user.id, user.login
   // owner, owner.id, owner.login
