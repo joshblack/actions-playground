@@ -6,16 +6,14 @@ const core = require('@actions/core');
 async function run() {
   const { context } = github;
   const token = core.getInput('GITHUB_TOKEN');
-  const octokit = new github.GitHub(token, {
-    previews: ['flash-preview'],
-  });
+  const octokit = new github.GitHub(token);
 
   const { pull_request: pullRequest, repository, review } = context.payload;
   if (!pullRequest) {
     throw new Error(`Unable to determine pull request from context`);
   }
 
-  console.log(typeof token);
+  console.log(await octokit.users.getAuthenticated());
 
   // check if reviewer is collaborator
   // octokit.repos.checkCollaborator({ owner, repo, username });
