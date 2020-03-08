@@ -10,10 +10,12 @@ async function run() {
     previews: ['flash-preview'],
   });
 
-  // const { pull_request: pullRequest } = context.payload;
-  // if (!pullRequest) {
-  // throw new Error(`Unable to determine pull request from context`);
-  // }
+  const { pull_request: pullRequest } = context.payload;
+  if (!pullRequest) {
+    throw new Error(`Unable to determine pull request from context`);
+  }
+
+  console.log(pullRequest);
 
   // const { id, labels, number, repository, state, draft, user } = pullRequest;
 
