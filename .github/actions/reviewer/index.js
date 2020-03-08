@@ -13,21 +13,16 @@ async function run() {
     throw new Error(`Unable to determine pull request from context`);
   }
 
-  console.log(await octokit.users.getAuthenticated());
-
   // check if reviewer is collaborator
   // octokit.repos.checkCollaborator({ owner, repo, username });
-  // console.log(repository.owner.login);
-  // console.log(repository.name);
-  // console.log(review.user.login);
 
-  // const isCollaborator = await octokit.repos.checkCollaborator({
-  // owner: repository.owner.login,
-  // name: repository.name,
-  // username: review.user.login,
-  // });
+  const isCollaborator = await octokit.repos.checkCollaborator({
+    owner: repository.owner.login,
+    name: repository.name,
+    username: review.user.login,
+  });
 
-  // console.log(isCollaborator);
+  console.log(isCollaborator);
   return;
 
   // We only work with reviews that are indicating approval
