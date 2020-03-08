@@ -4,6 +4,11 @@ inputs:
   GITHUB_TOKEN:
     description: A GitHub token to execute GitHub tasks
     required: true
+  # One review needed label
+  # Ready to merge label
+  # Number of approved to go to ready to merge? (or clear)
+  # Action that runs when push to master to update all branches? (with no
+  # labels or ready to merge)
 runs:
   using: 'docker'
   image: 'Dockerfile'

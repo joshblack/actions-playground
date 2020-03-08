@@ -72,16 +72,33 @@ async function run() {
     reviews.push(review);
   }
 
-  console.log(reviews);
+  const approved = reviews.filter(review => {
+    return review.state === 'APPROVED';
+  });
+
+  if (approved.length === 1) {
+    // Add label to pull (issue)
+    // octokit.issues.addLabels({ owner, repo, issue_number, labels: ['label-name'] });
+    // add label
+    await octokit.issues.addLabels({
+      owner: repository.owner.login,
+      repo: repository.name,
+      issue_number: pullRequest.number,
+      labels: ['one more review'],
+    });
+    return;
+  }
+
+  if (approved.length >= 2) {
+    // remove labels
+    return;
+  }
 
   // 2+: ready to review
   // 1: one review needed
   // 0: ready to merge
 
   // list labels for review
-
-  // Add label to pull (issue)
-  // octokit.issues.addLabels({ owner, repo, issue_number, labels: ['label-name'] });
 
   // Get all labels?
 
