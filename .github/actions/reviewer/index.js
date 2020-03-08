@@ -45,13 +45,34 @@ async function run() {
   }
 
   // list reviewers
-  const response = await octokit.pulls.listReviews({
+  const { data: allReviews } = await octokit.pulls.listReviews({
     owner: repository.owner.login,
     repo: repository.name,
     pull_number: pullRequest.number,
   });
 
-  console.log(response);
+  // collapse reviews
+  const reviewers = {};
+  const reviews = [];
+  // Process reviews in reverse since they are listed from oldest to newest
+  for (const review of allReviews.reverse()) {
+    const { author_association: association, user } = review;
+    // If we've already saved a review for this user we already have the most
+    // recent review
+    if (reviewers[user.login]) {
+      continue;
+    }
+
+    // If the author of the review is not a collaborator we ignore it
+    if (association !== 'COLLABORATOR') {
+      continue;
+    }
+
+    reviewers[user.login] = true;
+    reviews.push(review);
+  }
+
+  console.log(reviews);
 
   // 2+: ready to review
   // 1: one review needed
