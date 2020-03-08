@@ -18,7 +18,7 @@ async function run() {
 
   const isCollaborator = await octokit.repos.checkCollaborator({
     owner: repository.owner.login,
-    name: repository.name,
+    repo: repository.name,
     username: review.user.login,
   });
 
