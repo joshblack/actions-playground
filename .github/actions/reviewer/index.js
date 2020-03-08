@@ -6,9 +6,9 @@ const core = require('@actions/core');
 async function run() {
   const { context } = github;
   const token = core.getInput('GITHUB_TOKEN');
-  // const octokit = new github.GitHub(token, {
-  // previews: ['flash-preview'],
-  // });
+  const octokit = new github.GitHub(token, {
+    previews: ['flash-preview'],
+  });
 
   // const { pull_request: pullRequest } = context.payload;
   // if (!pullRequest) {
