@@ -8,6 +8,7 @@ async function run() {
   const token = core.getInput('GITHUB_TOKEN', {
     required: true,
   });
+  const autoLabelUsers = core.getInput('AUTO_LABEL_USERS') || [];
   const octokit = new github.GitHub(token);
   const { pull_request: pullRequest, repository, review } = context.payload;
   const { id, labels, number, state, draft, user } = pullRequest;
@@ -78,6 +79,9 @@ async function run() {
 
   const additionalReviewLabel = 'one more review';
   const readyForReviewLabel = 'ready for review';
+  const readyToMergeLabel = 'ready to merge';
+
+  console.log(approved.length);
 
   if (approved.length > 0) {
     const hasReadyLabel = pullRequest.labels.find(label => {
@@ -118,6 +122,19 @@ async function run() {
         repo: repository.name,
         issue_number: pullRequest.number,
         name: additionalReviewLabel,
+      });
+    }
+
+    const shouldAutoLabel = autoLabelUsers.find(user => {
+      return user.login === pullRequest.user.login;
+    });
+
+    if (shouldAutoLabel) {
+      await octokit.issues.addLabels({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pullRequest.number,
+        labels: [readyToMergeLabel],
       });
     }
     return;
