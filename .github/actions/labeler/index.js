@@ -9,7 +9,7 @@ async function run() {
     required: true,
   });
   const octokit = new github.GitHub(token);
-  const { pull_request: pullRequest } = context.payload;
+  const { pull_request: pullRequest, repository } = context.payload;
   const readyForReviewLabel = 'ready for review';
 
   // We only want to work with Pull Requests that are not draft PRs
