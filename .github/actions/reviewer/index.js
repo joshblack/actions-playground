@@ -45,7 +45,7 @@ async function run() {
   }
 
   // list reviewers
-  const response = octokit.pulls.listReviews({
+  const response = await octokit.pulls.listReviews({
     owner: repository.owner.login,
     repo: repository.name,
     pull_number: pullRequest.number,
