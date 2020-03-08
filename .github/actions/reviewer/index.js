@@ -76,7 +76,7 @@ async function run() {
     return review.state === 'APPROVED';
   });
 
-  if (approved.length === 1) {
+  if (approved.length === 10) {
     // Add label to pull (issue)
     await octokit.issues.addLabels({
       owner: repository.owner.login,
@@ -100,15 +100,18 @@ async function run() {
     return;
   }
 
-  if (approved.length >= 2) {
-    // if (pullRequest.labels.includes('one more review')) {
-    // await octokit.issues.removeLabel({
-    // owner: repository.owner.login,
-    // repo: repository.name,
-    // issue_number: pullRequest.number,
-    // name: 'one more review',
-    // });
-    // }
+  if (approved.length >= 1) {
+    const hasAdditionalReviewLabel = pullRequest.labels.find(label => {
+      return label.name === 'one more review';
+    });
+    if (hasAdditionalReviewLabel) {
+      await octokit.issues.removeLabel({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pullRequest.number,
+        name: 'one more review',
+      });
+    }
     return;
   }
 
