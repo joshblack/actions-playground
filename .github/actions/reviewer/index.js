@@ -32,6 +32,8 @@ async function run() {
   console.log(owner);
   console.log(user);
 
+  // Check if review is approval or not
+
   // list reviewers
   // octokit.pulls.listReviews({ owner, repo, pull_number });
 
