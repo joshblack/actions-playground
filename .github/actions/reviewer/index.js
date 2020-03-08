@@ -4,9 +4,8 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  console.log('hi');
-  // const { context } = github;
-  // const token = core.getInput('GITHUB_TOKEN');
+  const { context } = github;
+  const token = core.getInput('GITHUB_TOKEN');
   // const octokit = new github.GitHub(token, {
   // previews: ['flash-preview'],
   // });
