@@ -124,12 +124,9 @@ async function run() {
       });
     }
 
-    console.log(autoLabelUsers);
     const shouldAutoLabel = autoLabelUsers.find(user => {
       return user === pullRequest.user.login;
     });
-    console.log(shouldAutoLabel);
-
     if (shouldAutoLabel) {
       await octokit.issues.addLabels({
         owner: repository.owner.login,

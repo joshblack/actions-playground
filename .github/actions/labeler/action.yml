@@ -1,0 +1,17 @@
+name: Labeler
+description: A custom action
+inputs:
+  GITHUB_TOKEN:
+    description: A GitHub token to execute GitHub tasks
+    required: true
+  # ADDITIONAL_REVIEW_LABEL: one more review
+  # description: The name of the label used to indicate more reviews are needed
+  # One review needed label
+  # Ready to merge label
+  # Number of approved to go to ready to merge? (or clear)
+  # Action that runs when push to master to update all branches? (with no
+  # labels or ready to merge)
+  # users who want auto-ready to merge
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
