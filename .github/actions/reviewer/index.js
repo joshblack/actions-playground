@@ -127,7 +127,7 @@ async function run() {
     }
 
     const shouldAutoLabel = autoLabelUsers.find(user => {
-      return user.login === pullRequest.user.login;
+      return user === pullRequest.user.login;
     });
 
     if (shouldAutoLabel) {
