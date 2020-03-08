@@ -82,8 +82,6 @@ async function run() {
   const readyForReviewLabel = 'ready for review';
   const readyToMergeLabel = 'ready to merge';
 
-  console.log(approved.length);
-
   if (approved.length > 0) {
     const hasReadyLabel = pullRequest.labels.find(label => {
       return label.name === readyForReviewLabel;
@@ -126,9 +124,11 @@ async function run() {
       });
     }
 
+    console.log(autoLabelUsers);
     const shouldAutoLabel = autoLabelUsers.find(user => {
       return user === pullRequest.user.login;
     });
+    console.log(shouldAutoLabel);
 
     if (shouldAutoLabel) {
       await octokit.issues.addLabels({
