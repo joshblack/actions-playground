@@ -85,7 +85,10 @@ async function run() {
       labels: ['one more review'],
     });
 
-    if (pullRequest.labels.includes('ready for review')) {
+    const hasReadyLabel = pullRequest.labels.find(label => {
+      return label.name === 'ready for review';
+    });
+    if (hasReadyLabel) {
       await octokit.issues.removeLabel({
         owner: repository.owner.login,
         repo: repository.name,
@@ -98,14 +101,14 @@ async function run() {
   }
 
   if (approved.length >= 2) {
-    if (pullRequest.labels.includes('one more review')) {
-      await octokit.issues.removeLabel({
-        owner: repository.owner.login,
-        repo: repository.name,
-        issue_number: pullRequest.number,
-        name: 'one more review',
-      });
-    }
+    // if (pullRequest.labels.includes('one more review')) {
+    // await octokit.issues.removeLabel({
+    // owner: repository.owner.login,
+    // repo: repository.name,
+    // issue_number: pullRequest.number,
+    // name: 'one more review',
+    // });
+    // }
     return;
   }
 
