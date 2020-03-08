@@ -8,6 +8,7 @@ async function run() {
   const token = core.getInput('GITHUB_TOKEN', {
     required: true,
   });
+  const octokit = new github.GitHub(token);
   const { pull_request: pullRequest } = context.payload;
   const readyForReviewLabel = 'ready for review';
 
