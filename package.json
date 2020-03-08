@@ -1,7 +1,22 @@
 {
   "private": true,
   "workspaces": {
-    "packages": [".github/actions/*"],
-    "nohoist": ["custom-action/**"]
+    "packages": [
+      ".github/actions/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "custom-action/**"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1"
+  },
+  "prettier": {
+    "jsxBracketSameLine": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "proseWrap": "always"
   }
 }

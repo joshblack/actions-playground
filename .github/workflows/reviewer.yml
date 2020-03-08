@@ -1,0 +1,14 @@
+name: Reviewer
+on: pull_request_review
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1.4.0
+        with:
+          node-version: '12.x'
+      - uses: ./.github/actions/reviewer
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

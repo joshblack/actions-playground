@@ -4,22 +4,31 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 async function run() {
-  const { GITHUB_REF, GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
-  const token = core.getInput('GITHUB_TOKEN');
-  const octokit = new github.GitHub(token, {
-    previews: ['flash-preview'],
+  const packages = core.getInput('PACKAGES', {
+    required: true,
   });
-  const [owner, repo] = GITHUB_REPOSITORY.split('/');
 
-  const options = octokit.pulls.listFiles.endpoint.merge({
-    owner,
-    repo,
-    pull_number: github.context.payload.number,
-  });
-  // Max 300 files
-  const response = await octokit.paginate(options);
+  // Entrypoint size
+  // `master` vs. `PR`
 
-  console.log(response);
+  // Files
+  // `master` vs `PR`
+
+
+  // const { GITHUB_REF, GITHUB_SHA, GITHUB_REPOSITORY } = process.env;
+  // const token = core.getInput('GITHUB_TOKEN');
+  // const octokit = new github.GitHub(token, {
+    // previews: ['flash-preview'],
+  // });
+  // const [owner, repo] = GITHUB_REPOSITORY.split('/');
+
+  // const options = octokit.pulls.listFiles.endpoint.merge({
+    // owner,
+    // repo,
+    // pull_number: github.context.payload.number,
+  // });
+  // // Max 300 files
+  // const files = await octokit.paginate(options);
 
   // const { data } = await octokit.repos.createDeployment({
     // owner,

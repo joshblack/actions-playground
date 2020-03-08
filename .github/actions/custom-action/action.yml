@@ -4,6 +4,9 @@ inputs:
   GITHUB_TOKEN:
     description: A GitHub token to execute GitHub tasks
     required: true
+  PACKAGES:
+    description: Packages to collect data from
+    # required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
