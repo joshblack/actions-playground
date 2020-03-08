@@ -8,7 +8,7 @@ async function run() {
   const token = core.getInput('GITHUB_TOKEN', {
     required: true,
   });
-  const autoLabelUsers = core.getInput('AUTO_LABEL_USERS') || [];
+  const autoLabelUsers = core.getInput('AUTO_LABEL_USERS').split(',');
   const octokit = new github.GitHub(token);
   const { pull_request: pullRequest, repository, review } = context.payload;
   const { id, labels, number, state, draft, user } = pullRequest;

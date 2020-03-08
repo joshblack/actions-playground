@@ -12,7 +12,4 @@ jobs:
       - uses: ./.github/actions/reviewer
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # AUTO_LABEL_USERS:
-          # - joshblack
-          # ADDITIONAL_REVIEW_LABEL: one more review
-          # READY_FOR_REVIEW_LABEL: ready for review
+          AUTO_LABEL_USERS: 'joshblack'
