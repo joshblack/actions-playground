@@ -27,6 +27,9 @@ async function run() {
     return;
   }
 
+  console.log('hi');
+  process.exit(1);
+
   // const { name, owner } = repository;
   // console.log(name);
   // console.log(owner);
