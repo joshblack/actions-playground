@@ -78,19 +78,34 @@ async function run() {
 
   if (approved.length === 1) {
     // Add label to pull (issue)
-    // octokit.issues.addLabels({ owner, repo, issue_number, labels: ['label-name'] });
-    // add label
     await octokit.issues.addLabels({
       owner: repository.owner.login,
       repo: repository.name,
       issue_number: pullRequest.number,
       labels: ['one more review'],
     });
+
+    if (pullRequest.labels.includes('ready for review')) {
+      await octokit.issues.removeLabel({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pullRequest.number,
+        name: 'ready for review',
+      });
+    }
+
     return;
   }
 
   if (approved.length >= 2) {
-    // remove labels
+    if (pullRequest.labels.includes('one more review')) {
+      await octokit.issues.removeLabel({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: pullRequest.number,
+        name: 'one more review',
+      });
+    }
     return;
   }
 

@@ -9,6 +9,7 @@ inputs:
   # Number of approved to go to ready to merge? (or clear)
   # Action that runs when push to master to update all branches? (with no
   # labels or ready to merge)
+  # users who want auto-ready to merge
 runs:
   using: 'docker'
   image: 'Dockerfile'
