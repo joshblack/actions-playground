@@ -15,17 +15,17 @@ async function run() {
     throw new Error(`Unable to determine pull request from context`);
   }
 
-  // const { id, labels, number, repository, state, draft, user } = pullRequest;
+  const { id, labels, number, repository, state, draft, user } = pullRequest;
 
-  // // We only want to work with Pull Requests marked as open
-  // if (state !== 'open') {
-  // return;
-  // }
+  // We only want to work with Pull Requests marked as open
+  if (state !== 'open') {
+    return;
+  }
 
-  // // We only want to work with Pull Requests that are not draft PRs
-  // if (draft) {
-  // return;
-  // }
+  // We only want to work with Pull Requests that are not draft PRs
+  if (draft) {
+    return;
+  }
 
   // const { name, owner } = repository;
   // console.log(name);
