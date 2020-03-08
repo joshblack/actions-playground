@@ -44,13 +44,18 @@ async function run() {
     return;
   }
 
-  console.log(pullRequest);
-
-  // user, user.id, user.login
-  // owner, owner.id, owner.login
-
   // list reviewers
-  // octokit.pulls.listReviews({ owner, repo, pull_number });
+  const { data: reviews } = octokit.pulls.listReviews({
+    owner: repository.owner.login,
+    repo: repository.name,
+    pull_number: pullRequest.number,
+  });
+
+  console.log(reviews);
+
+  // 2+: ready to review
+  // 1: one review needed
+  // 0: ready to merge
 
   // list labels for review
 
