@@ -1,0 +1,9 @@
+name: Comment
+description: A custom action
+inputs:
+  GITHUB_TOKEN:
+    description: A GitHub token to execute GitHub tasks
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
