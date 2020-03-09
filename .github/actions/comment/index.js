@@ -9,10 +9,23 @@ async function run() {
     required: true,
   });
   const octokit = new github.GitHub(token);
-  console.log(github.context);
+  const { action, issue, repository } = context.payload;
+  const needsTriageLabel = 'needs triage';
 
-  // const needsTriageLabel = 'needs triage';
-  // needs more info
+  if (action === 'opened') {
+    const hasTriageLabel = issue.labels.find(label => {
+      return label.name === needsTriageLabel;
+    });
+    if (!hasTriageLabel) {
+      await octokit.issues.addLabels({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: issue.number,
+        labels: [needsTriageLabel],
+      });
+    }
+    return;
+  }
 }
 
 run().catch(error => {
