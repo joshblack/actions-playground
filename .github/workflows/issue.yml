@@ -1,0 +1,10 @@
+name: Issue
+on:
+  issues:
+    types: [opened, commented]
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: echo "commented!"
