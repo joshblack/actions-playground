@@ -1,10 +1,14 @@
 name: Issue
 on:
   issues:
-    types: [opened, commented]
+    types: [opened]
+  issue_comment:
+    types: [created]
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: echo "commented!"
+      - uses: ./.github/actions/issue
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
