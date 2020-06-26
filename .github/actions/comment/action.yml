@@ -4,6 +4,8 @@ inputs:
   GITHUB_TOKEN:
     description: A GitHub token to execute GitHub tasks
     required: true
+  enabled:
+    description: Specify whether this action should run
 runs:
   using: 'docker'
   image: 'Dockerfile'
