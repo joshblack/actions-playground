@@ -57,6 +57,14 @@ async function addTriageLabel(context, octokit) {
     return;
   }
 
+  const roles = new Set(['OWNER', 'COLLABORATOR']);
+  if (roles.has(issue.author_association)) {
+    core.info(
+      'Issue opened by project collaborator. No triage label necessary'
+    );
+    return;
+  }
+
   const hasTriageLabel = issue.labels.find(label => {
     return label.name === needsTriageLabel;
   });
