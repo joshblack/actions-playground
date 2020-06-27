@@ -72,19 +72,85 @@ async function addTriageLabel(context, octokit) {
 }
 
 async function addWaitingForResponse(context, octokit) {
-  console.log(context);
-  const { action } = context.payload;
-  if (action !== 'commented') {
+  const { action, comment, issue } = context.payload;
+  if (action !== 'created') {
     return;
   }
-
-  console.log(context.payload);
 
   const hasTriageLabel = issue.labels.find(label => {
     return label.name === needsTriageLabel;
   });
   if (!hasTriageLabel) {
     return;
+  }
+
+  const author = `waiting on author's response`;
+  const maintainer = `waiting on maintainer response`;
+
+  // none
+  // member
+  // first_time_contributor
+  // first_timer
+  // contributor
+  //
+  // owner
+  // collaborator
+  const roles = new Set(['owner', 'collaborator']);
+
+  // waiting for author's response
+  if (roles.has(comment.author_association)) {
+    const hasMaintainerLabel = issue.labels.find(label => {
+      return label === maintainer;
+    });
+    if (hasMaintainerLabel) {
+      await octokit.issues.removeLabel({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: issue.number,
+        labels: [maintainer],
+      });
+    }
+
+    const hasAuthorLabel = issue.labels.find(label => {
+      return label === author;
+    });
+
+    if (hasAuthorLabel) {
+      return;
+    }
+
+    await octokit.issues.addLabels({
+      owner: repository.owner.login,
+      repo: repository.name,
+      issue_number: issue.number,
+      labels: [author],
+    });
+  } else {
+    const hasAuthorLabel = issue.labels.find(label => {
+      return label === author;
+    });
+    if (hasAuthorLabel) {
+      await octokit.issues.removeLabel({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: issue.number,
+        labels: [author],
+      });
+    }
+
+    const hasMaintainerLabel = issue.labels.find(label => {
+      return label === maintainer;
+    });
+    if (hasMaintainerLabel) {
+      return;
+    }
+
+    await octokit.issues.addLabels({
+      owner: repository.owner.login,
+      repo: repository.name,
+      issue_number: issue.number,
+      labels: [maintainer],
+    });
   }
 }
 
