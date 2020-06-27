@@ -99,12 +99,9 @@ async function addWaitingForResponse(context, octokit) {
 
   // waiting for author's response
   if (roles.has(comment.author_association)) {
-    console.log('here');
     const hasMaintainerLabel = issue.labels.find(label => {
-      console.log(label);
-      return label === maintainer;
+      return label.name === maintainer;
     });
-    console.log(hasMaintainerLabel);
     if (hasMaintainerLabel) {
       await octokit.issues.removeLabel({
         owner: repository.owner.login,
@@ -115,7 +112,7 @@ async function addWaitingForResponse(context, octokit) {
     }
 
     const hasAuthorLabel = issue.labels.find(label => {
-      return label === author;
+      return label.name === author;
     });
 
     if (hasAuthorLabel) {
@@ -130,7 +127,7 @@ async function addWaitingForResponse(context, octokit) {
     });
   } else {
     const hasAuthorLabel = issue.labels.find(label => {
-      return label === author;
+      return label.name === author;
     });
     if (hasAuthorLabel) {
       await octokit.issues.removeLabel({
@@ -142,7 +139,7 @@ async function addWaitingForResponse(context, octokit) {
     }
 
     const hasMaintainerLabel = issue.labels.find(label => {
-      return label === maintainer;
+      return label.name === maintainer;
     });
     if (hasMaintainerLabel) {
       return;
