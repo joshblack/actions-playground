@@ -101,6 +101,7 @@ async function addWaitingForResponse(context, octokit) {
   if (roles.has(comment.author_association)) {
     console.log('here');
     const hasMaintainerLabel = issue.labels.find(label => {
+      console.log(label);
       return label === maintainer;
     });
     console.log(hasMaintainerLabel);
