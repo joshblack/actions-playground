@@ -107,7 +107,7 @@ async function addWaitingForResponse(context, octokit) {
         owner: repository.owner.login,
         repo: repository.name,
         issue_number: issue.number,
-        labels: [maintainer],
+        name: maintainer,
       });
     }
 
@@ -134,7 +134,7 @@ async function addWaitingForResponse(context, octokit) {
         owner: repository.owner.login,
         repo: repository.name,
         issue_number: issue.number,
-        labels: [author],
+        name: author,
       });
     }
 
