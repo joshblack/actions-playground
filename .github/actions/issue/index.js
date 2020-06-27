@@ -72,6 +72,7 @@ async function addTriageLabel(context, octokit) {
 }
 
 async function addWaitingForResponse(context, octokit) {
+  console.log(context);
   const { action } = context.payload;
   if (action !== 'commented') {
     return;
