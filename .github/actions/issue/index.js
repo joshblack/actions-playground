@@ -72,7 +72,7 @@ async function addTriageLabel(context, octokit) {
 }
 
 async function addWaitingForResponse(context, octokit) {
-  const { action, comment, issue } = context.payload;
+  const { action, comment, issue, repository } = context.payload;
   if (action !== 'created') {
     return;
   }
