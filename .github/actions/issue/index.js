@@ -99,9 +99,11 @@ async function addWaitingForResponse(context, octokit) {
 
   // waiting for author's response
   if (roles.has(comment.author_association)) {
+    console.log('here');
     const hasMaintainerLabel = issue.labels.find(label => {
       return label === maintainer;
     });
+    console.log(hasMaintainerLabel);
     if (hasMaintainerLabel) {
       await octokit.issues.removeLabel({
         owner: repository.owner.login,
