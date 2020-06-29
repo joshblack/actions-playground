@@ -118,7 +118,7 @@ const triage = {
 
 const response = {
   name: 'Add triage response',
-  filters: [events.comments.created, states.issue.open],
+  filters: [events.comments.created, states.issues.open],
   async run(context, octokit) {
     const { comment, issue, repository } = context.payload;
     const hasTriageLabel = issue.labels.find(label => {
