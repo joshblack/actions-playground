@@ -38,13 +38,20 @@ async function run() {
   // const plugins = [addTriageLabel, addWaitingForResponse];
   const plugins = [triage, response];
   for (const plugin of plugins) {
-    const filtered = plugin.filters.find(filter => {
-      return filter.run(context, octokit);
-    });
+    let failedCondition;
 
-    if (filtered) {
+    for (const condition of plugin.conditions) {
+      if (condition.run(context, octokit)) {
+        continue;
+      }
+      failedCondition = condition;
+      break;
+    }
+
+    if (failedCondition) {
       core.info(
-        `Skipping plugin \`${plugin.name}\` due to filter: \`${filtered.key}\``
+        `Skipping plugin \`${plugin.name}\` due to ` +
+          `condition: \`${failedCondition.key}\``
       );
       continue;
     }
@@ -90,7 +97,7 @@ const states = {
 
 const triage = {
   name: 'Add triage label',
-  filters: [events.issues.opened],
+  conditions: [events.issues.opened],
   async run(context, octokit) {
     const { issue, repository } = context.payload;
     const roles = new Set(['OWNER', 'COLLABORATOR']);
@@ -118,7 +125,7 @@ const triage = {
 
 const response = {
   name: 'Add triage response',
-  filters: [events.comments.created, states.issues.open],
+  conditions: [events.comments.created, states.issues.open],
   async run(context, octokit) {
     const { comment, issue, repository } = context.payload;
     const hasTriageLabel = issue.labels.find(label => {
