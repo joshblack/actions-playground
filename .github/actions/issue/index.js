@@ -56,6 +56,38 @@ async function run() {
 
 const needsTriageLabel = 'needs triage';
 
+const events = {
+  issues: {
+    opened: {
+      key: 'issue_opened',
+      run: action('opened'),
+    },
+  },
+  comments: {
+    created: {
+      key: 'comment_created',
+      run: action('created'),
+    },
+  },
+};
+
+const states = {
+  issues: {
+    open: {
+      key: 'issue_is_open',
+      run(context) {
+        return !context.issue.closed_at;
+      },
+    },
+    closed: {
+      key: 'issue_is_closed',
+      run(context) {
+        return !!context.issue.closed_at;
+      },
+    },
+  },
+};
+
 const triage = {
   name: 'Add triage label',
   filters: [events.issues.opened],
@@ -164,38 +196,6 @@ const response = {
         labels: [maintainer],
       });
     }
-  },
-};
-
-const events = {
-  issues: {
-    opened: {
-      key: 'issue_opened',
-      run: action('opened'),
-    },
-  },
-  comments: {
-    created: {
-      key: 'comment_created',
-      run: action('created'),
-    },
-  },
-};
-
-const states = {
-  issues: {
-    open: {
-      key: 'issue_is_open',
-      run(context) {
-        return !context.issue.closed_at;
-      },
-    },
-    closed: {
-      key: 'issue_is_closed',
-      run(context) {
-        return !!context.issue.closed_at;
-      },
-    },
   },
 };
 
